@@ -1,0 +1,23 @@
+{
+	"name": "@doctor_internet/intergroup",
+	"version": "1.0.0",
+	"description": "Small package for managing external groups into discord roles.",
+	"main": "index.js",
+	"scripts": {},
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com/JoshPiper/Node-InterGroup.git"
+	},
+	"keywords": [
+		"discord",
+		"discord.js",
+		"role",
+		"group"
+	],
+	"author": "Joshua Piper <internet@doctor-internet.dev>",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/JoshPiper/Node-InterGroup/issues",
+	},
+	"homepage": "https://github.com/JoshPiper/Node-InterGroup#readme"
+}
