@@ -74,12 +74,14 @@ module.exports = class AbstractGroupHandler {
 			for (let v of value){
 				this.addManaged(v)
 			}
-			return
+			return this
 		}
 
 		if (this.all.indexOf(value) === -1){
 			this.all.push(value)
 		}
+
+		return this
 	}
 
 	/**
