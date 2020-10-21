@@ -65,4 +65,43 @@ describe('GroupHandler', function(){
 			assert.strictEqual(handler.all[0], 'outtest')
 		})
 	})
+
+	describe('#addUnpair()', function(){
+		it('adds a mapping to the array', function(){
+			handler.addUnpair('test', 'othertest', 'outtest')
+			assert.strictEqual(handler.unpairings[0][0], 'test')
+			assert.strictEqual(handler.unpairings[0][1], 'othertest')
+			assert.strictEqual(handler.unpairings[0][2][0], 'outtest')
+			assert.strictEqual(handler.unpairings[0][3], false)
+		})
+
+		it('handles input checks', function(){
+			handler.addUnpair('test', 'othertest', 'outtest', true)
+			assert.strictEqual(handler.unpairings[0][0], 'test')
+			assert.strictEqual(handler.unpairings[0][1], 'othertest')
+			assert.strictEqual(handler.unpairings[0][2][0], 'outtest')
+			assert.strictEqual(handler.unpairings[0][3], true)
+		})
+
+		it('adds the mapped outputs to the all table', function(){
+			handler.addPair('test', 'othertest', 'outtest')
+			assert.strictEqual(handler.all.length, 1)
+			assert.strictEqual(handler.all[0], 'outtest')
+		})
+	})
+
+	describe('#addManaged()', function(){
+		it('adds a mapping to the all array', function(){
+			handler.addManaged('ree')
+			assert.strictEqual(handler.all.length, 1)
+			assert.strictEqual(handler.all[0], 'ree')
+		})
+
+		it('handles array inputs', function(){
+			handler.addManaged(['ree', 'roo'])
+			assert.strictEqual(handler.all.length, 2)
+			assert.strictEqual(handler.all[0], 'ree')
+			assert.strictEqual(handler.all[1], 'roo')
+		})
+	})
 })
