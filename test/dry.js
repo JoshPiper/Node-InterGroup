@@ -104,4 +104,18 @@ describe('GroupHandler', function(){
 			assert.strictEqual(handler.all[1], 'roo')
 		})
 	})
+
+	describe('#resolve()', function(){
+		it('resolves mappings', function(){
+			handler.addMapping('input', 'output')
+			assert.strictEqual(handler.resolve('input').length, 1)
+
+			handler.addMapping('input', ['output1', 'output2'])
+			assert.strictEqual(handler.resolve('input').length, 2)
+		})
+
+		it('handles not found mappings with an empty array.', function(){
+			assert.strictEqual(handler.resolve('input').length, 0)
+		})
+	})
 })

@@ -81,4 +81,18 @@ module.exports = class AbstractGroupHandler {
 			this.all.push(value)
 		}
 	}
+
+	/**
+	 * Resolve a single input value to its output mappings.
+	 * Does not include pairs or unpairs, only simple mappings.
+	 * @param value
+	 * @return array
+	 */
+	resolve(value){
+		if (this.mappings[value] !== undefined){
+			return this.mappings[value]
+		}
+
+		return []
+	}
 }
