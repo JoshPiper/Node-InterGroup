@@ -45,7 +45,18 @@ describe('GroupHandler', function(){
 	describe('#addPair()', function(){
 		it('adds a mapping to the array', function(){
 			handler.addPair('test', 'othertest', 'outtest')
-			assert.strictEqual(handler.pairings[0], 'outtest')
+			assert.strictEqual(handler.pairings[0][0], 'test')
+			assert.strictEqual(handler.pairings[0][1], 'othertest')
+			assert.strictEqual(handler.pairings[0][2][0], 'outtest')
+			assert.strictEqual(handler.pairings[0][3], false)
+		})
+
+		it('handles input checks', function(){
+			handler.addPair('test', 'othertest', 'outtest', true)
+			assert.strictEqual(handler.pairings[0][0], 'test')
+			assert.strictEqual(handler.pairings[0][1], 'othertest')
+			assert.strictEqual(handler.pairings[0][2][0], 'outtest')
+			assert.strictEqual(handler.pairings[0][3], true)
 		})
 
 		it('adds the mapped outputs to the all table', function(){
