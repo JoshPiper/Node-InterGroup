@@ -1,7 +1,7 @@
 let assert = require('assert')
 let {AbstractGroupHandler} = require('../index')
 
-describe('GroupHandler', function(){
+describe('AbstractGroupHandler', function(){
 	let handler = new AbstractGroupHandler()
 
 	beforeEach(() => {
@@ -116,6 +116,59 @@ describe('GroupHandler', function(){
 
 		it('handles not found mappings with an empty array.', function(){
 			assert.strictEqual(handler.resolve('input').length, 0)
+		})
+	})
+
+	describe('#resolveAll()', function(){
+		it('resolves simple mappings', function(){
+			handler.addMapping('in1', 'out1')
+
+			let resolved = handler.resolveAll(['in1'])
+			assert.strictEqual(resolved.length, 1)
+			assert.strictEqual(resolved[0], 'out1')
+		})
+
+		it('resolves paired output mappings', function(){
+			handler.addMapping('in1', 'out1')
+			handler.addMapping('in2', 'out2')
+			handler.addPair('out1', 'out2', 'out3')
+
+			let resolved = handler.resolveAll(['in1', 'in2'])
+			assert.strictEqual(resolved.length, 3)
+			assert.strictEqual(resolved[0], 'out1')
+			assert.strictEqual(resolved[1], 'out2')
+			assert.strictEqual(resolved[2], 'out3')
+		})
+
+		it('resolves paired input mappings', function(){
+			handler.addMapping('in1', 'out1')
+			handler.addPair('in1', 'in2', 'out1&2', true)
+
+			let resolved = handler.resolveAll(['in1', 'in2'])
+			assert.strictEqual(resolved.length, 2)
+			assert.strictEqual(resolved[0], 'out1')
+			assert.strictEqual(resolved[1], 'out1&2')
+		})
+
+		it('resolves unpaired output mappings', function(){
+			handler.addMapping('in1', 'out1')
+			handler.addMapping('in2', 'out2')
+			handler.addUnpair('out1', 'out2', 'out1&!2')
+
+			let resolved = handler.resolveAll(['in1'])
+			assert.strictEqual(resolved.length, 2)
+			assert.strictEqual(resolved[0], 'out1')
+			assert.strictEqual(resolved[1], 'out1&!2')
+		})
+
+		it('resolves unpaired input mappings', function(){
+			handler.addMapping('in1', 'out1')
+			handler.addUnpair('in1', 'in2', 'out1&!2', true)
+
+			let resolved = handler.resolveAll(['in1'])
+			assert.strictEqual(resolved.length, 2)
+			assert.strictEqual(resolved[0], 'out1')
+			assert.strictEqual(resolved[1], 'out1&!2')
 		})
 	})
 })
