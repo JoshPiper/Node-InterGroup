@@ -95,4 +95,45 @@ module.exports = class AbstractGroupHandler {
 
 		return []
 	}
+
+	/**
+	 * Resolve all outputs for the given inputs.
+	 * @param values array
+	 * @return array
+	 */
+	resolveAll(values){
+		let out = values
+			.map(value => {return this.resolve(value)})
+
+		let inPairs = this.pairings.filter(pair => pair[3])
+		let outPairs = this.pairings.filter(pair => !pair[3])
+
+		let inUnpairs = this.unpairings.filter(pair => pair[3])
+		let outUnpairs = this.unpairings.filter(pair => !pair[3])
+
+		for (let [a, b, mapping] of inPairs){
+			if (values.includes(a) && values.includes(b)){
+				out.push(mapping)
+			}
+		}
+		for (let [a, b, mapping] of inUnpairs){
+			if (values.includes(a) && !values.includes(b)){
+				out.push(mapping)
+			}
+		}
+
+		out = out.flat()
+		for (let [a, b, mapping] of outPairs){
+			if (out.includes(a) && out.includes(b)){
+				out.push(...mapping)
+			}
+		}
+		for (let [a, b, mapping] of outUnpairs){
+			if (out.includes(a) && !out.includes(b)){
+				out.push(...mapping)
+			}
+		}
+
+		return out
+	}
 }
