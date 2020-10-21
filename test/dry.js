@@ -4,6 +4,10 @@ let GroupHandler = require('../index')
 describe('GroupHandler', function(){
 	let handler = new GroupHandler()
 
+	beforeEach(() => {
+		handler = new GroupHandler()
+	})
+
 	it('starts with an empty all table.', function(){
 		assert.strictEqual(handler.all.length, 0)
 	})
@@ -23,12 +27,14 @@ describe('GroupHandler', function(){
 	describe('#addMapping()', function(){
 		it('adds a mapping to the table', function(){
 			let mapping = ['test', 'test2']
+
 			handler.addMapping('test', mapping)
 			assert.strictEqual(handler.mappings['test'], mapping)
 		})
 
 		it('adds the mapped outputs to the all table', function(){
 			let mapping = ['test', 'test2']
+
 			handler.addMapping('test', mapping)
 			assert.strictEqual(handler.all.length, 2)
 			assert.strictEqual(handler.all[0], 'test')
