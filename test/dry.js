@@ -1,11 +1,11 @@
 let assert = require('assert')
-let GroupHandler = require('../index')
+let {AbstractGroupHandler} = require('../index')
 
 describe('GroupHandler', function(){
-	let handler = new GroupHandler()
+	let handler = new AbstractGroupHandler()
 
 	beforeEach(() => {
-		handler = new GroupHandler()
+		handler = new AbstractGroupHandler()
 	})
 
 	it('starts with an empty all table.', function(){
@@ -39,6 +39,19 @@ describe('GroupHandler', function(){
 			assert.strictEqual(handler.all.length, 2)
 			assert.strictEqual(handler.all[0], 'test')
 			assert.strictEqual(handler.all[1], 'test2')
+		})
+	})
+
+	describe('#addPair()', function(){
+		it('adds a mapping to the array', function(){
+			handler.addPair('test', 'othertest', 'outtest')
+			assert.strictEqual(handler.pairings[0], 'outtest')
+		})
+
+		it('adds the mapped outputs to the all table', function(){
+			handler.addPair('test', 'othertest', 'outtest')
+			assert.strictEqual(handler.all.length, 1)
+			assert.strictEqual(handler.all[0], 'outtest')
 		})
 	})
 })
