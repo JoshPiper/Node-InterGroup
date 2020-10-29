@@ -30,7 +30,7 @@ module.exports = class DiscordGroupHandler extends AbstractGroupHandler {
 	 * @param reason string
 	 * @returns {Promise<GuildMember[]>}
 	 */
-	handleMember(member, groups, reason = 'Role Sync'){
+	async handleMember(member, groups, reason = 'Role Sync'){
 		let [add, remove] = this.resolveMember(member, groups)
 		return Promise.all([
 			member.roles.add(add, reason),
