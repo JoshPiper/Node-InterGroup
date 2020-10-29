@@ -17,7 +17,7 @@ module.exports = class DiscordGroupHandler extends AbstractGroupHandler {
 	 * @param member GuildMember
 	 * @param groups Array
 	 */
-	handleMember(member, groups){
+	resolveMember(member, groups){
 		let roles = member.roles.cache.map(role => role.id)
 		let [add, remove] = this.handleGroup(groups, roles)
 
