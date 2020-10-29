@@ -171,4 +171,56 @@ describe('AbstractGroupHandler', function(){
 			assert.strictEqual(resolved[1], 'out1&!2')
 		})
 	})
+
+	describe('#handleGroup()', function(){
+		beforeEach(() => {
+			handler = new AbstractGroupHandler()
+			handler.addMapping('inputA', 'output1')
+			handler.addMapping('inputB', 'output2')
+			handler.addPair('output1', 'output2', 'output1&2')
+			handler.addUnpair('output1', 'output2', 'output1&!2')
+			handler.addManaged('alwaysRemove')
+		})
+
+		it('handles cases with no input groups', function(){
+			let [add, remove] = handler.handleGroup(['inputA', 'inputB'], [])
+			assert.strictEqual(add.length, 3)
+			assert.strictEqual(add[0], 'output1')
+			assert.strictEqual(add[1], 'output2')
+			assert.strictEqual(add[2], 'output1&2')
+			assert.strictEqual(remove.length, 0)
+
+			let [add2, remove2] = handler.handleGroup(['inputA'], [])
+			assert.strictEqual(add2.length, 2)
+			assert.strictEqual(add2[0], 'output1')
+			assert.strictEqual(add2[1], 'output1&!2')
+			assert.strictEqual(remove2.length, 0)
+
+			let [add3, remove3] = handler.handleGroup(['inputB'], [])
+			assert.strictEqual(add3.length, 1)
+			assert.strictEqual(add3[0], 'output2')
+			assert.strictEqual(remove3.length, 0)
+		})
+
+		it('handles cases with input groups', function(){
+			let [add, remove] = handler.handleGroup(['inputA', 'inputB'], ['output1&2'])
+			assert.strictEqual(add.length, 2)
+			assert.strictEqual(add[0], 'output1')
+			assert.strictEqual(add[1], 'output2')
+			assert.strictEqual(remove.length, 0)
+
+			let [add2, remove2] = handler.handleGroup(['inputA'], ['output1&2'])
+			assert.strictEqual(add2.length, 2)
+			assert.strictEqual(add2[0], 'output1')
+			assert.strictEqual(add2[1], 'output1&!2')
+			assert.strictEqual(remove2.length, 1)
+			assert.strictEqual(remove2[0], 'output1&2')
+
+			let [add3, remove3] = handler.handleGroup(['inputB'], ['output1&2'])
+			assert.strictEqual(add3.length, 1)
+			assert.strictEqual(add3[0], 'output2')
+			assert.strictEqual(remove3.length, 1)
+			assert.strictEqual(remove3[0], 'output1&2')
+		})
+	})
 })
