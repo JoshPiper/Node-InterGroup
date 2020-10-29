@@ -32,9 +32,16 @@ module.exports = class DiscordGroupHandler extends AbstractGroupHandler {
 	 */
 	async handleMember(member, groups, reason = 'Role Sync'){
 		let [add, remove] = this.resolveMember(member, groups)
-		return Promise.all([
-			member.roles.add(add, reason),
-			member.roles.remove(remove, reason)
-		])
+
+		if (add.length > 0 && remove.length > 0){
+			await member.roles.add(add, reason)
+			return member.roles.remove(remove, reason)
+		} else if (add.length > 0){
+			return member.roles.add(add, reason)
+		} else if (remove.length > 0){
+			return member.roles.remove(remove, reason)
+		} else {
+			return member
+		}
 	}
 }
