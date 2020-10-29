@@ -14,13 +14,27 @@ module.exports = class DiscordGroupHandler extends AbstractGroupHandler {
 	}
 
 	/**
+	 * Resolve a member and input array into output group array.
 	 * @param member GuildMember
 	 * @param groups Array
 	 */
 	resolveMember(member, groups){
 		let roles = member.roles.cache.map(role => role.id)
-		let [add, remove] = this.handleGroup(groups, roles)
+		return this.handleGroup(groups, roles)
+	}
 
-		console.log(add, remove)
+	/**
+	 * Handle a member and input array, assigning it its managed groups.
+	 * @param member GuildMember
+	 * @param groups Array
+	 * @param reason string
+	 * @returns {Promise<GuildMember[]>}
+	 */
+	handleMember(member, groups, reason = 'Role Sync'){
+		let [add, remove] = this.resolveMember(member, groups)
+		return Promise.all([
+			member.roles.add(add, reason),
+			member.roles.remove(remove, reason)
+		])
 	}
 }
