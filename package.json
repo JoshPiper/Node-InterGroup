@@ -1,6 +1,6 @@
 {
 	"name": "@doctor_internet/intergroup",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "Small package for managing external groups into discord roles.",
 	"main": "index.js",
 	"scripts": {},
