@@ -149,12 +149,14 @@ module.exports = class AbstractGroupHandler {
 	handleGroup(groups, currentRoles){
 		let roles = this.resolveAll(groups)
 
-		let rSet = new Set(roles)
-		let cRoles = new Set(currentRoles)
-		let toAdd = roles.filter(role => !cRoles.has(role))
-		let addSet = new Set(toAdd)
-		let toRemove = this.all.filter(role => cRoles.has(role) && !rSet.has(role))
+		let rSet = new Set(roles) /* The roles we need to end up with */
+		let cRoles = new Set(currentRoles) /* The roles we currently have */
+		let toAdd = rSet - cRoles /* The roles we need to have */
 
-		return [toAdd, toRemove]
+		let allSet = new Set(this.all)
+		let removeSet = cRoles - rSet /* The roles we need to remove, so the ones we have minus the ones we need to end up with */
+		let toRemove = Array.from(removeSet).filter(role => allSet.has(role)) /* Of the ones we need to remove, only the ones we manage */
+
+		return [Array.from(toAdd), toRemove]
 	}
 }
